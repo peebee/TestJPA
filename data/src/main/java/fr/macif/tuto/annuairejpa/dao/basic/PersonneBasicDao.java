@@ -31,12 +31,17 @@ public interface PersonneBasicDao {
      public Collection<PersonneBasic> findPersonneByNom(final String nom);
      
      /**
-      * Sauvegarde de la personne
+      * modification de la personne
       */
-     public PersonneBasic merge(PersonneBasic personne);
+     public PersonneBasic update(PersonneBasic personne);
      
      /**
-      * DÃ©truire un enregistrement
+      * Sauvegarde de la personne
+      */
+     public PersonneBasic save(PersonneBasic personne);
+     
+     /**
+      * DŽtruire un enregistrement
       */
      public void delete(PersonneBasic personne);
  

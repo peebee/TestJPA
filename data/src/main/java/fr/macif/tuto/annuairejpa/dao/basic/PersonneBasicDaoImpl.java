@@ -53,8 +53,7 @@ public class PersonneBasicDaoImpl implements PersonneBasicDao {
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-    public PersonneBasic merge(PersonneBasic personne) {
-        personne.setDateModification(new Date());
+    public PersonneBasic save(PersonneBasic personne) {
         return em.merge(personne);
     }
 
@@ -63,4 +62,11 @@ public class PersonneBasicDaoImpl implements PersonneBasicDao {
     public void delete(PersonneBasic personne) {
         em.remove(em.merge(personne));
     }
+
+	@Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+	public PersonneBasic update(PersonneBasic personne) {
+        personne.setDateModification(new Date());
+        return em.merge(personne);		
+	}
 }

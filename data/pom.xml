@@ -107,7 +107,7 @@
         <dependency>
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
-            <version>2.0.0</version>
+            <version>1.8.0.10</version>
             <scope>test</scope>
         </dependency>
         <dependency>

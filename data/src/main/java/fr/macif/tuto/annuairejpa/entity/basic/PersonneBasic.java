@@ -27,8 +27,7 @@ public class PersonneBasic implements Serializable {
      */
     private static final long serialVersionUID = -5685979299670223254L;
     @Id
-    @GeneratedValue (strategy=GenerationType.AUTO)
-    @Column(updatable = false)
+    @GeneratedValue
     private Long id;
     @Version
     @Column(nullable = false)
@@ -167,11 +166,12 @@ public class PersonneBasic implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append(this.getClass().getName()).append("-");
         sb.append("  id=").append(id);
+        sb.append("  version=").append(version);
         sb.append("  nom=").append(nom);
-        sb.append("  pr√©nom=").append(prenom);
-        sb.append("  cr√©e=").append(dateCreation);
+        sb.append("  prénom=").append(prenom);
+        sb.append("  créé=").append(dateCreation);
         if (dateModification != null) {
-            sb.append("  mofifi√©=").append(dateModification);
+            sb.append("  mofifié=").append(dateModification);
         }
 
         return sb.toString();
