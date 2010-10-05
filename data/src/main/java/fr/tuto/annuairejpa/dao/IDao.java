@@ -1,4 +1,4 @@
-package fr.macif.tuto.annuairejpa.dao;
+package fr.tuto.annuairejpa.dao;
 
 import java.util.List;
 

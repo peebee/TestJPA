@@ -1,7 +1,8 @@
-package fr.macif.tuto.annuairejpa.dao.basic;
+package fr.tuto.annuairejpa.dao.basic;
 
 
-import fr.macif.tuto.annuairejpa.entity.basic.PersonneBasic;
+import fr.tuto.annuairejpa.entity.basic.PersonneBasic;
+
 import java.util.Collection;
 
 /**

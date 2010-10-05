@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.macif.tuto.annuairejpa.entity;
+package fr.tuto.annuairejpa.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;

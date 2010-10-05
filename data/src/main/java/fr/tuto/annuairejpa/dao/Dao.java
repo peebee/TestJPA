@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.macif.tuto.annuairejpa.dao;
+package fr.tuto.annuairejpa.dao;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;

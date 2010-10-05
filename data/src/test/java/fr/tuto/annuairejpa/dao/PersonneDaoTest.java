@@ -1,4 +1,9 @@
-package fr.macif.tuto.annuairejpa.dao;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package fr.tuto.annuairejpa.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -6,21 +11,17 @@ import static org.junit.Assert.assertNotNull;
 import java.sql.SQLException;
 import java.util.Collection;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
-import fr.macif.tuto.annuairejpa.entity.Adresse;
-import fr.macif.tuto.annuairejpa.entity.Personne;
+import fr.tuto.annuairejpa.dao.PersonneDao;
+import fr.tuto.annuairejpa.entity.Adresse;
+import fr.tuto.annuairejpa.entity.Civilite;
+import fr.tuto.annuairejpa.entity.Personne;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,46 +32,36 @@ import org.junit.Test;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-@Transactional
-public class PersonneDao2Test {
+public class PersonneDaoTest {
 
-	final Logger logger = LoggerFactory.getLogger(PersonneDao2Test.class);
+	final Logger logger = LoggerFactory.getLogger(PersonneDaoTest.class);
 
 	@Autowired
 	protected PersonneDao personneDao = null;
-
-    private EntityManager em = null;
-    private EntityTransaction tx = null;
+	protected Civilite civ;
 
 	@Before
 	public void init() {
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpaTest");
-		em = emf.createEntityManager();
-		tx = em.getTransaction();
+		civ = new Civilite();
+		civ.setId(1L);
+		civ.setLibelleCourt("Mr.");
 	}
 
 	@Test
 	public void testHibernateTemplate() throws SQLException {
 		assertNotNull("Personne DAO est nul.", personneDao);
-		assertNotNull("em est null", em);
+
 		Personne personneNouvelle1 = new Personne("MARTIN","Jules",1);
+		personneDao.save(personneNouvelle1);
 		Personne personneNouvelle2 = new Personne("MARTIN","Juliette",2);
+		personneDao.save(personneNouvelle2);
 		Personne personneNouvelle3 = new Personne("DUPOND","Alfonse",1);
+		personneDao.save(personneNouvelle3);
 		Personne personneNouvelle4 = new Personne("LOUIGY","Julie",2);
- 
-		tx.begin();
-		em.persist(personneNouvelle4);
-		em.persist(personneNouvelle3);
-		em.persist(personneNouvelle2);
-		em.persist(personneNouvelle1);
-		tx.commit();
+		personneDao.save(personneNouvelle4);
 		logger.debug("********"+ personneNouvelle1.getVersion() + "**********" + personneNouvelle1.toString());
 		Adresse adresseNouvelle1 = new Adresse("Rue de la broche",null,"Niort","79000");
-		personneNouvelle1=em.find(Personne.class, 4L);
 		personneNouvelle1.addAdresse(adresseNouvelle1);
-		tx.begin();
-		em.persist(adresseNouvelle1);
-		tx.commit();
 		logger.debug("********"+ personneNouvelle1.getVersion() + "**********" + personneNouvelle1.toString());
 		
 		
@@ -79,7 +70,7 @@ public class PersonneDao2Test {
 		int nbPersonnes = 4;
 
 		assertNotNull("List des Personnes est vide.", lPersonnes);
-		assertEquals("Le Nombre de Personnes devrait �tre " + nbPersonnes + ".", nbPersonnes, lPersonnes.size());
+		assertEquals("Le Nombre de Personnes devrait est " + nbPersonnes + ".", nbPersonnes, lPersonnes.size());
 
 		Long firstId = new Long(1);
 		// Long secondId = new Long(2);

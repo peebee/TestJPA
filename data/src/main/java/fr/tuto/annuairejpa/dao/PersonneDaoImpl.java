@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.macif.tuto.annuairejpa.dao;
+package fr.tuto.annuairejpa.dao;
 
-import fr.macif.tuto.annuairejpa.entity.Personne;
+import fr.tuto.annuairejpa.entity.Personne;
+
 import java.util.Collection;
 import java.util.Date;
 

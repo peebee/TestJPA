@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package fr.macif.tuto.annuairejpa.entity;
+package fr.tuto.annuairejpa.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

@@ -7,8 +7,8 @@
 	</configSuffixes>
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
-		<config>src/test/resources/fr/macif/tuto/annuairejpa/dao/basic/PersonneBasicDaoTest-context.xml</config>
-		<config>src/test/resources/fr/macif/tuto/annuairejpa/dao/PersonneDaoTest-context.xml</config>
+		<config>src/test/resources/fr/tuto/annuairejpa/dao/PersonneDaoTest-context.xml</config>
+		<config>src/test/resources/fr/tuto/annuairejpa/dao/basic/PersonneBasicDaoTest-context.xml</config>
 	</configs>
 	<configSets>
 	</configSets>

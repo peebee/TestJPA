@@ -1,4 +1,4 @@
-package fr.macif.tuto.annuairejpa.entity.basic;
+package fr.tuto.annuairejpa.entity.basic;
 
 import java.io.Serializable;
 import java.util.Date;
