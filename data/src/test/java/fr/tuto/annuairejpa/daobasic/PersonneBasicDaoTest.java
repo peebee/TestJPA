@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.tuto.annuairejpa.dao.basic;
+package fr.tuto.annuairejpa.daobasic;
 
-import fr.tuto.annuairejpa.dao.basic.PersonneBasicDao;
+import fr.tuto.annuairejpa.daobasic.PersonneBasicDao;
 import fr.tuto.annuairejpa.entity.basic.AdresseBasic;
 import fr.tuto.annuairejpa.entity.basic.PersonneBasic;
 

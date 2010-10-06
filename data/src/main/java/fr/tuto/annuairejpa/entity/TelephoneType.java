@@ -9,8 +9,9 @@ package fr.tuto.annuairejpa.entity;
  *
  * @author Pascal
  */
-public enum PhoneType {
+public enum TelephoneType {
     fixe,
     mobile,
+    bureau,
     inconnu
 }

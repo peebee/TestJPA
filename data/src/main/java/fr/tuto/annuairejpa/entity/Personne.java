@@ -1,30 +1,25 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fr.tuto.annuairejpa.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * 
@@ -32,46 +27,38 @@ import javax.persistence.Version;
  */
 @Entity
 @Table(name = "Personnes")
-@SequenceGenerator(name="PERSONNE_SEQ", sequenceName="PERSONNE_SEQ", initialValue=10)
 public class Personne implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -5685979299670223254L;
-
+	private static final long serialVersionUID = 2539295821569597057L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PERSONNE_SEQ")
-	@Column(name = "ID", unique = false, nullable = false, insertable = true, updatable = true, length = 10)
+	@GeneratedValue
 	private Long id;
-
 	@Version
 	@Column(nullable = false)
 	private int version;
-
 	@Column(nullable = false, length = 30)
 	private String nom;
-
 	@Column(nullable = false, length = 30)
 	private String prenom;
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "PERSONNE_ADRESSE", joinColumns = @JoinColumn(name = "personneId"), inverseJoinColumns = @JoinColumn(name = "adresseId"))
-	private List<Adresse> adresses = new ArrayList<Adresse>();
-
+	private List<Adresse> adresses;
 	// @OneToOne
 	// @JoinColumn(name = "civilite", nullable = false)
 	// private Civilite civilite;
 	private Integer civilite;
-
-	// @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	// private List<Phone> phones = new ArrayList<Phone>();
+	
+	@OneToMany(mappedBy="owner",fetch=FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
+	private List<Telephone> telephones;
 
 	@Column(nullable = false, name = "CREATED")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateCreation;
-
-	@Column(name = "MODIFY")
+	@Column(name = "MODIFIED")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateModification;
 
@@ -79,20 +66,11 @@ public class Personne implements Serializable {
 	}
 
 	public Personne(String nom, String prenom, int civilite) {
-		super();
 		this.nom = nom;
 		this.prenom = prenom;
 		this.civilite = civilite;
 		this.version = new Integer(1);
 		this.dateCreation = new Date();
-	}
-
-	public List<Adresse> getAdresses() {
-		return adresses;
-	}
-
-	public void setAdresses(List<Adresse> adresses) {
-		this.adresses = adresses;
 	}
 
 	public Integer getCivilite() {
@@ -102,14 +80,6 @@ public class Personne implements Serializable {
 	public void setCivilite(Integer civilite) {
 		this.civilite = civilite;
 	}
-
-	// public Civilite getCivilite() {
-	// return civilite;
-	// }
-	//
-	// public void setCivilite(Civilite civilite) {
-	// this.civilite = civilite;
-	// }
 
 	public Date getCreation() {
 		return dateCreation;
@@ -123,10 +93,6 @@ public class Personne implements Serializable {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public String getNom() {
 		return nom;
 	}
@@ -134,14 +100,6 @@ public class Personne implements Serializable {
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
-
-	// public List<Phone> getPhones() {
-	// return phones;
-	// }
-	//
-	// public void setPhones(List<Phone> phones) {
-	// this.phones = phones;
-	// }
 
 	public String getPrenom() {
 		return prenom;
@@ -175,8 +133,28 @@ public class Personne implements Serializable {
 		this.dateModification = dateModification;
 	}
 
+	public List<Telephone> getTelephones() {
+		return telephones;
+	}
+
+	public void setAdresses(List<Adresse> adresses) {
+		this.adresses = adresses;
+	}
+
+	public void setTelephones(List<Telephone> telephones) {
+		this.telephones = telephones;
+	}
+
+	public boolean addTelephones(Telephone telephone) {
+		return this.telephones.add(telephone);
+	}
+
 	public boolean addAdresse(Adresse adresse) {
 		return this.adresses.add(adresse);
+	}
+
+	public List<Adresse> getAdresses() {
+		return adresses;
 	}
 
 	@Override
@@ -217,9 +195,13 @@ public class Personne implements Serializable {
 		StringBuilder sb = new StringBuilder();
 		sb.append(this.getClass().getName()).append("-");
 		sb.append("  id=").append(id);
+		sb.append("  version=").append(version);
 		sb.append("  nom=").append(nom);
-		sb.append("  prï¿½nom=").append(prenom);
-		sb.append("  crï¿½e=").append(dateCreation);
+		sb.append("  prŽnom=").append(prenom);
+		sb.append("  crŽŽ=").append(dateCreation);
+		if (dateModification != null) {
+			sb.append("  mofifiŽ=").append(dateModification);
+		}
 
 		return sb.toString();
 	}

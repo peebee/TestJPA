@@ -1,4 +1,4 @@
-package fr.tuto.annuairejpa.dao.basic;
+package fr.tuto.annuairejpa.daobasic;
 
 
 import fr.tuto.annuairejpa.entity.basic.PersonneBasic;

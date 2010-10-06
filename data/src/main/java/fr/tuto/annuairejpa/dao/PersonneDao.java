@@ -5,7 +5,6 @@
 
 package fr.tuto.annuairejpa.dao;
 
-import fr.tuto.annuairejpa.entity.Adresse;
 import fr.tuto.annuairejpa.entity.Personne;
 
 import java.util.Collection;
@@ -19,10 +18,10 @@ public interface PersonneDao {
     /**
      * Recherche par ID
      */
-    public Personne findPersonneById(int id);
+    public Personne findPersonneById(Long id);
 
     /**
-     * recup√©ration de toutes les personnes
+     * recupération de toutes les personnes
      */
      public Collection<Personne> readPersonnes();
      
@@ -38,12 +37,19 @@ public interface PersonneDao {
      
      /**
       * Sauvegarde de la personne
+     * @return TODO
       */
-     public void save(Personne personne);
+     public Personne create(Personne personne);
      
      /**
-      * DÔøΩtruire un enregistrement
+      * Détruire un enregistrement
       */
      public void delete(Personne personne);
+
+     /**
+      * mettre à jour un enregistrement
+     * @return TODO
+      */
+	public Personne update(Personne personne);
      
 }

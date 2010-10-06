@@ -29,10 +29,12 @@ public abstract class Dao<T, PK> implements IDao<T, PK> {
         return em.find(entityType, id);
     }
 
-    @Override
+	@SuppressWarnings("unchecked")
+	@Override
     public List<T> findAll() {
         String all = "select x from " + entityType.getSimpleName() + " x";
-        return em.createQuery(all).getResultList();
+        List<T> resultList = (List<T>) em.createQuery(all).getResultList();
+		return resultList;
     }
 
     @Override

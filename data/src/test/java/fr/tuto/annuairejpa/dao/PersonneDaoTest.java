@@ -1,16 +1,21 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package fr.tuto.annuairejpa.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
+import javax.persistence.OptimisticLockException;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,13 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.tuto.annuairejpa.dao.PersonneDao;
 import fr.tuto.annuairejpa.entity.Adresse;
-import fr.tuto.annuairejpa.entity.Civilite;
 import fr.tuto.annuairejpa.entity.Personne;
-
-import org.junit.Before;
-import org.junit.Test;
+import fr.tuto.annuairejpa.entity.Telephone;
 
 /**
  * 
@@ -34,88 +35,185 @@ import org.junit.Test;
 @ContextConfiguration
 public class PersonneDaoTest {
 
-	final Logger logger = LoggerFactory.getLogger(PersonneDaoTest.class);
+	final Logger logger = LoggerFactory.getLogger(PersonneDao.class);
 
 	@Autowired
 	protected PersonneDao personneDao = null;
-	protected Civilite civ;
 
-	@Before
-	public void init() {
-		civ = new Civilite();
-		civ.setId(1L);
-		civ.setLibelleCourt("Mr.");
+	protected Personne pers1 = null;
+	protected Personne pers2 = null;
+	protected Personne pers3 = null;
+
+	public PersonneDaoTest() {
 	}
 
+	@BeforeClass
+	public static void setUpClass() throws Exception {
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+	}
+
+	@Before
+	public void setUp() {
+
+		pers2 = new Personne();
+		pers2.setCivilite(2);
+		pers2.setCreation(new Date());
+		pers2.setNom("DURANT");
+		pers2.setPrenom("Giselle");
+		pers2.setVersion(1);
+		Adresse adresse = new Adresse("rue du boeuf", null, "Niort", "79000");
+		ArrayList<Adresse> al = new ArrayList<Adresse>();
+		al.add(adresse);
+		pers2.setAdresses(al);
+	}
+
+	@After
+	public void tearDown() {
+	}
+
+	/**
+	 * Test of findPersonneById method, of class PersonneBasicDao.
+	 */
 	@Test
-	public void testHibernateTemplate() throws SQLException {
-		assertNotNull("Personne DAO est nul.", personneDao);
+	public void testFindPersonneById() {
+		logger.debug("findPersonneById");
+		Long id = 1L;
+		Personne result = personneDao.findPersonneById(id);
+		assertNotNull("Pas de personne avec l'ID " + id, result);
+		assertEquals("Le nom devrait être : ", "MARTIN", result.getNom());
+		assertEquals("Le prénom devrait être : ", "Jules", result.getPrenom());
+//		assertEquals("Le nombre d'adresse devrait être :", 2, result
+//				.getAdresses().size());
+		logger.debug("Objet récupéré : " + result);
+		List<Adresse> adresses = result.getAdresses();
+		assertNotNull("Il devrait y avoir des adresses ", adresses);
+		for (Adresse adresse : adresses) 
+			logger.debug("  Adresse => " + adresse.toString());
 
-		Personne personneNouvelle1 = new Personne("MARTIN","Jules",1);
-		personneDao.save(personneNouvelle1);
-		Personne personneNouvelle2 = new Personne("MARTIN","Juliette",2);
-		personneDao.save(personneNouvelle2);
-		Personne personneNouvelle3 = new Personne("DUPOND","Alfonse",1);
-		personneDao.save(personneNouvelle3);
-		Personne personneNouvelle4 = new Personne("LOUIGY","Julie",2);
-		personneDao.save(personneNouvelle4);
-		logger.debug("********"+ personneNouvelle1.getVersion() + "**********" + personneNouvelle1.toString());
-		Adresse adresseNouvelle1 = new Adresse("Rue de la broche",null,"Niort","79000");
-		personneNouvelle1.addAdresse(adresseNouvelle1);
-		logger.debug("********"+ personneNouvelle1.getVersion() + "**********" + personneNouvelle1.toString());
-		
-		
-		Collection<Personne> lPersonnes = personneDao.readPersonnes();
+		List<Telephone> telephones = result.getTelephones();
+		assertNotNull("Il devrait y avoir des téléphones ", telephones);
+		for (Telephone telephone : telephones)
+			logger.debug("  Téléphone => " + telephone);
 
-		int nbPersonnes = 4;
+	}
 
-		assertNotNull("List des Personnes est vide.", lPersonnes);
-		assertEquals("Le Nombre de Personnes devrait est " + nbPersonnes + ".", nbPersonnes, lPersonnes.size());
-
-		Long firstId = new Long(1);
-		// Long secondId = new Long(2);
-
-		for (Personne personne : lPersonnes) {
-			assertNotNull("Client is null.", personne);
-
-			if (firstId.equals(personne.getId())) {
-				String prenom = "Jules";
-				String nom = "MARTIN";
-				int nbAdresse = 2;
-
-				assertEquals("Le prÔøΩnom de la personne devrait ÔøΩtre " + prenom + ".", prenom, personne.getPrenom());
-				assertEquals("Le nom de la personne devrait ÔøΩtre " + nom + ".", nom, personne.getNom());
-				logger.debug(personne.toString());
-
-				assertNotNull("La liste des adresse de la personne est nulle.", personne.getAdresses());
-				assertEquals("Nombre d'adresse pour cette personne devrait ÔøΩtre " + nbAdresse + ".", nbAdresse, personne
-						.getAdresses().size());
-
-				Long adresseId = new Long(1);
-				String rue1 = "rue1";
-				String ville = "Niort";
-				String cp = "79000";
-
-				for (Adresse adresse : personne.getAdresses()) {
-					if (adresseId.equals(adresse.getId())) {
-						assertNotNull("Adresse est null", adresse);
-
-						assertEquals("L'identifiant de l'adresse devrait ÔøΩtre '" + adresseId + "'.", adresseId, adresse.getId());
-						assertEquals("La rue1 de l'adresse devrait ÔøΩtre '" + rue1 + "'.", rue1, adresse.getRue1());
-
-						assertEquals("La ville de l'adresse devrait ÔøΩtre '" + ville + "'.", ville, adresse.getVille());
-						assertEquals("le code postal de l'adresse devrait ÔøΩtre '" + cp + "'.", cp, adresse.getCp());
-					}
-				}
-				//Adresse adresseNouvelle = new Adresse("Rue de la broche",null,"Niort","79000");
-				//personne.addAdresse(adresseNouvelle);
-				//personneDao.save(personne);
-//				Personne personneNouvelle = new Personne("nom","prenom",1);
-//				personneDao.save(personneNouvelle);
-//				System.out.println("**********" + personne.getVersion());
-				
-			}
+	/**
+	 * Test of readPersonnes method, of class PersonneBasicDao.
+	 */
+	@Test
+	public void testReadPersonnes_0args() {
+		logger.debug("readPersonnes");
+		int expResult = 4;
+		Collection<Personne> result = personneDao.readPersonnes();
+		assertEquals(expResult, result.size());
+		for (Personne personne : result) {
+			logger.debug("Personne :" + personne);
 		}
 	}
 
+	/**
+	 * Test of readPersonnes method, of class PersonneBasicDao.
+	 */
+	@Test
+	public void testReadPersonnes_int_int() {
+		logger.debug("readPersonnes");
+		int startIndex = 0;
+		int maxResults = 2;
+		int expResult = 2;
+		Collection<Personne> result = personneDao.readPersonnes(startIndex,
+				maxResults);
+		assertEquals(expResult, result.size());
+		for (Personne personne : result) {
+			logger.debug("Personne :" + personne);
+		}
+	}
+
+	/**
+	 * Test of findPersonneByNom method, of class PersonneBasicDao.
+	 */
+	@Test
+	public void testFindPersonneByNom() {
+		logger.debug("findPersonneByNom");
+		String nom = "GERMAN";
+		int expResult = 1;
+		Collection<Personne> result = personneDao.findPersonneByNom(nom);
+		assertEquals(expResult, result.size());
+		for (Personne personne : result) {
+			logger.debug("Personne :" + personne);
+		}
+	}
+
+	/**
+	 * Test of create method, of class PersonneBasicDao.
+	 */
+	@Test
+	public void testCreate() {
+		logger.debug("create");
+		pers2 = personneDao.create(pers2);
+		logger.debug("ID généré pour la nouvelle personne: "+ pers2.getId());
+		int expResult = 5;
+		Collection<Personne> result = personneDao.readPersonnes();
+		assertEquals(expResult, result.size());
+		for (Personne personne : result) {
+			logger.debug("Personne :" + personne);
+		}
+	}
+
+	/**
+	 * Test of delete method, of class PersonneBasicDao.
+	 */
+	@Test
+	public void testDelete() {
+		logger.debug("delete");
+		pers3 = personneDao.findPersonneById(3L);
+		personneDao.delete(pers3);
+		int expResult = 4;
+		Collection<Personne> result = personneDao.readPersonnes();
+		assertEquals(expResult, result.size());
+		for (Personne personne : result) {
+			logger.debug("Personne :" + personne);
+		}
+	}
+
+	/**
+	 * Test of update method, of class PersonneBasicDao.
+	 */
+	@Test
+	public void testUpdate() {
+		logger.debug("update");
+		pers3 = personneDao.findPersonneById(2L);
+		pers3.setPrenom("Gwenaëlle");
+		pers3 = personneDao.update(pers3);
+		int expResult = 4;
+		Collection<Personne> result = personneDao.readPersonnes();
+		assertEquals(expResult, result.size());
+		for (Personne personne : result) {
+			logger.debug("Personne :" + personne);
+		}
+
+	}
+
+	/**
+	 * Test de Lock Optimiste
+	 */
+	@Test
+	public void testLock() {
+		logger.debug("Lock optimiste");
+		Personne p1 = personneDao.findPersonneById(1L);
+		Personne p2 = personneDao.findPersonneById(1L);
+		p2.setPrenom("Louis");
+		p2 = personneDao.update(p2);
+		try {
+			p1 = personneDao.update(p1);
+			fail("Une OptimisticLockException est attendue");
+		} catch (OptimisticLockException ole) {
+			logger.debug("OptimisticLockException ça marche");
+			logger.debug("Personne 1: " + p1);
+			logger.debug("Personne 2: " + p2);
+		}
+
+	}
 }

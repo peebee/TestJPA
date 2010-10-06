@@ -13,6 +13,7 @@ import javax.persistence.Embeddable;
  *
  * @author Pascal
  */
+@SuppressWarnings("serial")
 @Embeddable
 public class AdresseBasic implements Serializable {
 
