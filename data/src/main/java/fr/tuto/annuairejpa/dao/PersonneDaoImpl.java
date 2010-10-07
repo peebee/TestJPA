@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  * @author Pascal
  */
-@Repository
+@Repository(value="personneDao")
 public class PersonneDaoImpl implements PersonneDao {
 
 	private EntityManager em = null;

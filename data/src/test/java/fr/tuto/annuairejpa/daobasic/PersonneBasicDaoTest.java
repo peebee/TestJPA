@@ -1,15 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package fr.tuto.annuairejpa.daobasic;
 
-import fr.tuto.annuairejpa.daobasic.PersonneBasicDao;
-import fr.tuto.annuairejpa.entity.basic.AdresseBasic;
-import fr.tuto.annuairejpa.entity.basic.PersonneBasic;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Collection;
 import java.util.Date;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -21,7 +18,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import static org.junit.Assert.*;
+
+import fr.tuto.annuairejpa.entity.basic.AdresseBasic;
+import fr.tuto.annuairejpa.entity.basic.PersonneBasic;
 
 /**
  * 
@@ -40,6 +39,10 @@ public class PersonneBasicDaoTest {
 	protected PersonneBasic pers3 = null;
 
 	public PersonneBasicDaoTest() {
+	}
+
+	public void setPersonneDao(PersonneBasicDao personneDao) {
+		this.personneDao = personneDao;
 	}
 
 	@BeforeClass
@@ -75,12 +78,12 @@ public class PersonneBasicDaoTest {
 	@Test
 	public void testFindPersonneById() {
 		logger.debug("findPersonneById");
-		Long id = 0L;
+		Long id = 1L;
 		PersonneBasic result = personneDao.findPersonneById(id);
+		assertNotNull("Une personne au moins doit existée",personneDao);
 		assertEquals("Le nom devrait être : ", "MARTIN", result.getNom());
 		assertEquals("Le prénom devrait être : ", "Jules", result.getPrenom());
 		logger.debug("Objet récupéré : " + result);
-
 	}
 
 	/**
@@ -134,10 +137,12 @@ public class PersonneBasicDaoTest {
 	 */
 	@Test
 	public void testSave() {
-		logger.debug("save Ajout");
-		personneDao.save(pers2);
-		int expResult = 5;
+		logger.debug("create Ajout");
+		// initialise le nombre de personne de la base
 		Collection<PersonneBasic> result = personneDao.readPersonnes();
+		int expResult = result.size() + 1;  
+		personneDao.create(pers2);
+		result = personneDao.readPersonnes();
 		assertEquals(expResult, result.size());
 		for (PersonneBasic personne : result) {
 			logger.debug("Personne :" + personne);
@@ -150,10 +155,12 @@ public class PersonneBasicDaoTest {
 	@Test
 	public void testDelete() {
 		logger.debug("delete");
+		// initialise le nombre de personne de la base
+		Collection<PersonneBasic> result = personneDao.readPersonnes();
+		int expResult = result.size() - 1;  
 		pers3 = personneDao.findPersonneById(3L);
 		personneDao.delete(pers3);
-		int expResult = 4;
-		Collection<PersonneBasic> result = personneDao.readPersonnes();
+		result = personneDao.readPersonnes();
 		assertEquals(expResult, result.size());
 		for (PersonneBasic personne : result) {
 			logger.debug("Personne :" + personne);
@@ -166,15 +173,17 @@ public class PersonneBasicDaoTest {
 	@Test
 	public void testUpdate() {
 		logger.debug("update");
+		// initialise le nombre de personne de la base
+		Collection<PersonneBasic> result = personneDao.readPersonnes();
+		int expResult = result.size();  
+
 		pers3=personneDao.findPersonneById(2L);
 		pers3.setPrenom("Gwenaëlle");
 		personneDao.update(pers3);
-		int expResult = 4;
-		Collection<PersonneBasic> result = personneDao.readPersonnes();
+		result = personneDao.readPersonnes();
 		assertEquals(expResult, result.size());
 		for (PersonneBasic personne : result) {
 			logger.debug("Personne :" + personne);
 		}
-
 	}
 }

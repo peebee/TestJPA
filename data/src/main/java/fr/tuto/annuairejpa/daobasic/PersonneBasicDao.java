@@ -39,7 +39,7 @@ public interface PersonneBasicDao {
      /**
       * Sauvegarde de la personne
       */
-     public PersonneBasic save(PersonneBasic personne);
+     public PersonneBasic create(PersonneBasic personne);
      
      /**
       * DŽtruire un enregistrement

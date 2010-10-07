@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author Pascal
  */
-@Repository
+@Repository(value="personneDao")
 public class PersonneBasicDaoImpl implements PersonneBasicDao {
 
     private EntityManager em = null;
@@ -54,7 +54,7 @@ public class PersonneBasicDaoImpl implements PersonneBasicDao {
 
     @Override
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
-    public PersonneBasic save(PersonneBasic personne) {
+    public PersonneBasic create(PersonneBasic personne) {
         return em.merge(personne);
     }
 

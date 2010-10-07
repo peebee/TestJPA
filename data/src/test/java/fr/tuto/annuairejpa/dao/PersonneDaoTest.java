@@ -47,6 +47,10 @@ public class PersonneDaoTest {
 	public PersonneDaoTest() {
 	}
 
+	public void setPersonneDao(PersonneDao personneDao) {
+		this.personneDao = personneDao;
+	}
+
 	@BeforeClass
 	public static void setUpClass() throws Exception {
 	}
