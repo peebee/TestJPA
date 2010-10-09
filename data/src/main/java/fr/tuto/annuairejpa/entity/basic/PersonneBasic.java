@@ -167,10 +167,10 @@ public class PersonneBasic implements Serializable {
         sb.append("  id=").append(id);
         sb.append("  version=").append(version);
         sb.append("  nom=").append(nom);
-        sb.append("  prénom=").append(prenom);
-        sb.append("  créé=").append(dateCreation);
+        sb.append("  pr√©nom=").append(prenom);
+        sb.append("  cr√©√©=").append(dateCreation);
         if (dateModification != null) {
-            sb.append("  mofifié=").append(dateModification);
+            sb.append("  mofifi√©=").append(dateModification);
         }
 
         return sb.toString();

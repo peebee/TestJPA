@@ -113,7 +113,7 @@ public class Telephone {
 		sb.append(this.getClass().getName()).append("-");
 		sb.append("  id=").append(id);
 		sb.append("  version=").append(version);
-		sb.append("  numéro=").append(numero);
+		sb.append("  num√©ro=").append(numero);
 		sb.append("  type=").append(telephone_type);
 		return sb.toString();
 	}

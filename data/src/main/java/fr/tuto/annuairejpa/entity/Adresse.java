@@ -156,7 +156,7 @@ public class Adresse implements Serializable {
 		sb.append("  adr2=").append(adr2);
 		sb.append("  cp=").append(cp);
 		sb.append("  ville=").append(ville);
-		sb.append("  cr=").append(dateCreation);
+		sb.append("  crÃ©Ã©=").append(dateCreation);
 
 		return sb.toString();
 	}

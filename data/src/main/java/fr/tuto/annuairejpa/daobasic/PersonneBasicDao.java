@@ -42,7 +42,7 @@ public interface PersonneBasicDao {
      public PersonneBasic create(PersonneBasic personne);
      
      /**
-      * DŽtruire un enregistrement
+      * DÃ©truire un enregistrement
       */
      public void delete(PersonneBasic personne);
  

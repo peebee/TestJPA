@@ -20,8 +20,10 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import fr.tuto.annuairejpa.entity.Adresse;
 import fr.tuto.annuairejpa.entity.Personne;
@@ -82,6 +84,7 @@ public class PersonneDaoTest {
 	 * Test of findPersonneById method, of class PersonneBasicDao.
 	 */
 	@Test
+	@Transactional(readOnly=true)
 	public void testFindPersonneById() {
 		logger.debug("findPersonneById");
 		Long id = 1L;
@@ -89,8 +92,8 @@ public class PersonneDaoTest {
 		assertNotNull("Pas de personne avec l'ID " + id, result);
 		assertEquals("Le nom devrait être : ", "MARTIN", result.getNom());
 		assertEquals("Le prénom devrait être : ", "Jules", result.getPrenom());
-//		assertEquals("Le nombre d'adresse devrait être :", 2, result
-//				.getAdresses().size());
+		assertEquals("Le nombre d'adresse devrait être :", 2, result
+				.getAdresses().size());
 		logger.debug("Objet récupéré : " + result);
 		List<Adresse> adresses = result.getAdresses();
 		assertNotNull("Il devrait y avoir des adresses ", adresses);
@@ -154,6 +157,8 @@ public class PersonneDaoTest {
 	 * Test of create method, of class PersonneBasicDao.
 	 */
 	@Test
+	@Transactional(readOnly=false)
+	@Rollback(true)
 	public void testCreate() {
 		logger.debug("create");
 		pers2 = personneDao.create(pers2);

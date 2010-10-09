@@ -43,7 +43,7 @@ public class Personne implements Serializable {
 	private String nom;
 	@Column(nullable = false, length = 30)
 	private String prenom;
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "PERSONNE_ADRESSE", joinColumns = @JoinColumn(name = "personneId"), inverseJoinColumns = @JoinColumn(name = "adresseId"))
 	private List<Adresse> adresses;
 	// @OneToOne
@@ -51,7 +51,7 @@ public class Personne implements Serializable {
 	// private Civilite civilite;
 	private Integer civilite;
 	
-	@OneToMany(mappedBy="owner",fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="owner",fetch=FetchType.LAZY)
 	@Fetch(FetchMode.SUBSELECT)
 	private List<Telephone> telephones;
 
@@ -197,10 +197,10 @@ public class Personne implements Serializable {
 		sb.append("  id=").append(id);
 		sb.append("  version=").append(version);
 		sb.append("  nom=").append(nom);
-		sb.append("  prénom=").append(prenom);
-		sb.append("  créé=").append(dateCreation);
+		sb.append("  pr√©nom=").append(prenom);
+		sb.append("  cr√©√©=").append(dateCreation);
 		if (dateModification != null) {
-			sb.append("  mofifié=").append(dateModification);
+			sb.append("  mofifi√©=").append(dateModification);
 		}
 
 		return sb.toString();

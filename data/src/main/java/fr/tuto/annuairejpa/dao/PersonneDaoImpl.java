@@ -31,6 +31,7 @@ public class PersonneDaoImpl implements PersonneDao {
 	}
 
 	@Override
+    @Transactional (readOnly=true)
 	public Personne findPersonneById(Long id) {
 		return em.find(Personne.class, id);
 	}

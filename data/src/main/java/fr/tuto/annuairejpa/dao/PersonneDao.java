@@ -21,7 +21,7 @@ public interface PersonneDao {
     public Personne findPersonneById(Long id);
 
     /**
-     * recupération de toutes les personnes
+     * recup√©ration de toutes les personnes
      */
      public Collection<Personne> readPersonnes();
      
@@ -42,12 +42,12 @@ public interface PersonneDao {
      public Personne create(Personne personne);
      
      /**
-      * Détruire un enregistrement
+      * D√©truire un enregistrement
       */
      public void delete(Personne personne);
 
      /**
-      * mettre à jour un enregistrement
+      * mettre √† jour un enregistrement
      * @return TODO
       */
 	public Personne update(Personne personne);
